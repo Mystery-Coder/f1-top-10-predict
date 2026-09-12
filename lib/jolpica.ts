@@ -40,6 +40,44 @@ export async function fetchDrivers(year: number | string) {
   return data.MRData.DriverTable.Drivers;
 }
 
+export interface DriverStandingRow {
+  position?: string;
+  points?: string;
+  Driver?: import("./types").DriverInfo;
+}
+
+export async function fetchDriverStandings(year: number | string) {
+  const data = await jolpica<
+    MRData<{
+      StandingsTable: {
+        StandingsLists: Array<{
+          season: string;
+          round?: string;
+          DriverStandings?: DriverStandingRow[];
+        }>;
+      };
+    }>
+  >(`/${year}/driverstandings`, 43200);
+  return data.MRData.StandingsTable.StandingsLists;
+}
+
+/**
+ * Season driver list for the picker. The roster endpoint (`/{year}/drivers`)
+ * is unreliable for the current season — it can omit real competitors
+ * (e.g. Verstappen in 2026) and includes test/reserve drivers. The current
+ * season's driver standings list every real competitor, so prefer them
+ * whenever they exist, falling back to the roster before the season starts.
+ */
+export async function fetchSeasonDrivers(year: number | string): Promise<import("./types").DriverInfo[]> {
+  const lists = await fetchDriverStandings(year);
+  const standings = lists[0]?.DriverStandings ?? [];
+  const drivers = standings
+    .map((row) => row.Driver)
+    .filter((d): d is import("./types").DriverInfo => Boolean(d));
+  if (drivers.length > 0) return drivers;
+  return fetchDrivers(year);
+}
+
 export interface RawResult {
   position?: string | null;
   positionText?: string | null;

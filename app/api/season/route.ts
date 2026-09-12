@@ -1,5 +1,5 @@
 import { NextRequest } from "next/server";
-import { fetchDrivers, fetchSchedule } from "@/lib/jolpica";
+import { fetchSeasonDrivers, fetchSchedule } from "@/lib/jolpica";
 import { toScheduleEntry } from "@/lib/schedule";
 
 export const dynamic = "force-dynamic";
@@ -11,7 +11,7 @@ export async function GET(req: NextRequest) {
   try {
     const [races, drivers] = await Promise.all([
       fetchSchedule(year),
-      fetchDrivers(year),
+      fetchSeasonDrivers(year),
     ]);
 
     const now = Date.now();

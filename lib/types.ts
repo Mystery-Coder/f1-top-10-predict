@@ -19,6 +19,7 @@ export interface RaceScheduleEntry {
 }
 
 export interface SlotPrediction {
+  slot: number;
   driverId: string;
   multiplier: Multiplier;
 }

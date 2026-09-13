@@ -523,6 +523,14 @@ body::after {
   font-weight: 600;
 }
 
+.score-row .predicted-status {
+  color: var(--text-muted);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
 .score-row .pts {
   font-family: var(--font-display);
   font-weight: 700;

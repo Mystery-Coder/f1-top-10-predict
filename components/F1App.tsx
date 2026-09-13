@@ -22,7 +22,7 @@ interface SeasonData {
 const YEARS = [2026, 2025, 2024, 2023, 2022, 2021, 2020];
 
 function emptySlots(): SlotPrediction[] {
-  return Array.from({ length: 10 }, () => ({ driverId: "", multiplier: 1 }));
+  return Array.from({ length: 10 }, (_, i) => ({ slot: i + 1, driverId: "", multiplier: 1 }));
 }
 
 function timeUntil(ts: number, now: number): string {
@@ -339,6 +339,12 @@ export default function F1App() {
 
                 {isLocked(race) && (
                   <>
+                    {predictions[race.round] && !scores[race.round]?.score && (
+                      <PredictionView
+                        slots={predictions[race.round]!}
+                        drivers={sortedDrivers}
+                      />
+                    )}
                     {scores[race.round]?.resultsAvailable && scores[race.round]?.score ? (
                       <ScoreBreakdown
                         score={scores[race.round].score!}
@@ -465,6 +471,44 @@ function ScoreBreakdown({
         })}
       </div>
       {slots.length === 0 && <p className="prediction-empty">This race was scored from a prediction stored on this device.</p>}
+    </div>
+  );
+}
+
+function PredictionView({
+  slots,
+  drivers,
+}: {
+  slots: SlotPrediction[];
+  drivers: DriverInfo[];
+}) {
+  const name = (id: string) => {
+    const d = drivers.find((x) => x.driverId === id);
+    return d ? `${d.code} ${d.familyName}` : id;
+  };
+
+  return (
+    <div className="score-section">
+      <h3>Your prediction</h3>
+      <div className="score-max">Locked — no longer editable.</div>
+      <div className="score-grid">
+        <div className="score-row header">
+          <span>Pos</span>
+          <span>Your pick</span>
+          <span>Status</span>
+          <span>Mult</span>
+          <span></span>
+        </div>
+        {slots.map((s) => (
+          <div key={s.slot} className="score-row">
+            <span className="slot-label">P{s.slot}</span>
+            <span className="predicted-driver">{name(s.driverId)}</span>
+            <span className="predicted-status">locked</span>
+            <span>×{s.multiplier}</span>
+            <span className="pts zero">—</span>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

@@ -137,10 +137,145 @@ body::after {
   min-height: 0;
 }
 
+/* ── Mobile (≤ 860px) ────────────────────────────────── */
 @media (max-width: 860px) {
+  .header {
+    flex-wrap: wrap;
+    gap: 6px 10px;
+    padding: 8px 12px;
+  }
+
+  .brand {
+    font-size: 15px;
+    letter-spacing: 2px;
+  }
+
+  .year-select {
+    width: 66px;
+    padding: 4px 6px;
+    font-size: 12px;
+  }
+
+  .season-total-chip {
+    margin-left: auto;
+    padding: 3px 10px;
+  }
+
+  .tabs {
+    width: 100%;
+    order: 5;
+    margin-left: 0;
+    border-top: 1px solid var(--border);
+    padding-top: 4px;
+  }
+
+  .tab {
+    flex: 1;
+    padding: 7px 8px;
+  }
+
   .layout {
-    grid-template-columns: 1fr;
-    grid-template-rows: auto 1fr;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+
+  /* Race picker becomes a horizontal, scrollable chip strip */
+  .race-list {
+    display: flex;
+    align-items: stretch;
+    gap: 8px;
+    overflow-x: auto;
+    padding: 10px 12px;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+    max-height: none;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .race-list::-webkit-scrollbar {
+    display: none;
+  }
+
+  .race-item {
+    flex: 0 0 auto;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 3px;
+    width: auto;
+    min-width: 104px;
+    padding: 8px 10px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+  }
+
+  .race-item:hover {
+    background: var(--bg-elevated);
+  }
+
+  .race-item.selected {
+    background: rgba(225, 6, 0, 0.08);
+    border-color: var(--f1-red);
+    box-shadow: none;
+  }
+
+  .race-item .race-date {
+    display: none;
+  }
+
+  .race-item .race-name {
+    max-width: 92px;
+  }
+
+  .race-info {
+    gap: 0;
+  }
+
+  .main-panel {
+    max-height: none;
+    overflow: visible;
+    padding: 16px 12px 40px;
+  }
+
+  .race-header h2 {
+    font-size: 17px;
+  }
+
+  .score-total {
+    font-size: 26px;
+  }
+
+  .history-table th,
+  .history-table td {
+    padding: 8px 6px;
+  }
+
+  .slot-row .predicted-driver,
+  .score-row .predicted-driver {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+  }
+}
+
+@media (max-width: 420px) {
+  .slot-row {
+    grid-template-columns: 34px 1fr 56px;
+    gap: 6px;
+    padding: 5px 6px;
+  }
+
+  .score-row {
+    grid-template-columns: 34px 1fr 64px 36px 38px;
+    gap: 6px;
+    padding: 6px;
+  }
+
+  .hint {
+    display: none;
   }
 }
 

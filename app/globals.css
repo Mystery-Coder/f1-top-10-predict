@@ -541,8 +541,20 @@ body::after {
   color: var(--green);
 }
 
+.score-row .pts.off {
+  color: var(--accent-orange);
+}
+
 .score-row .pts.zero {
   color: var(--text-muted);
+}
+
+.score-row.off-by-one {
+  border-color: rgba(255, 179, 0, 0.45);
+}
+
+.score-row.exact {
+  border-color: rgba(0, 230, 118, 0.35);
 }
 
 /* ── Leaderboard ────────────────────────────────────── */

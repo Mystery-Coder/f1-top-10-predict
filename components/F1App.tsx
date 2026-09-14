@@ -457,15 +457,17 @@ function ScoreBreakdown({
         </div>
         {score.slots.map((s) => {
           const actual = s.actualPosition;
+          const exact = actual === s.slot;
+          const offByOne = actual != null && Math.abs(actual - s.slot) === 1;
           return (
-            <div key={s.slot} className="score-row">
+            <div key={s.slot} className={`score-row ${exact ? "exact" : offByOne ? "off-by-one" : ""}`}>
               <span className="slot-label">P{s.slot}</span>
               <span className="predicted-driver">{name(s.driverId)}</span>
               <span className="actual">
                 {actual != null ? `P${actual}` : <span className="status-dnf">{s.status}</span>}
               </span>
               <span>×{s.multiplier}</span>
-              <span className={`pts ${s.points > 0 ? "positive" : "zero"}`}>{s.points === 0 && actual != null ? "0" : s.points}</span>
+              <span className={`pts ${exact ? "positive" : offByOne ? "off" : "zero"}`}>{s.points}</span>
             </div>
           );
         })}
